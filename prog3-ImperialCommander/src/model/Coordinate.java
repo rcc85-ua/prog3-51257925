@@ -5,12 +5,13 @@
 package model;
 
 import java.util.Objects;
+import java.util.TreeSet;
 
 
 /**
  * The Class Coordinate.
  */
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
 	
 	/** The x. */
 	private int x;
@@ -97,6 +98,9 @@ public class Coordinate {
 	 */
 	public int hashCode() {
 		return Objects.hash(x, y);
+		/*hash debe tener el mismo hash code, 
+		 * si o1==o2 tienen que tener el mismo hash*/
+	
 	}
 	
 	/**
@@ -115,15 +119,39 @@ public class Coordinate {
 		Coordinate other = (Coordinate) obj;
 		return x == other.x && y == other.y;
 	}
-
-	/*public boolean equals(Object obj) {
-	if(obj == this) return true;
-	if(obj == null) return false;
-	if(!(obj instanceof Coordinate)) return false;
-	Coordinate cord=(Coordinate) obj;
-	if(cord.x==this.x && cord.y == this.y) return true;
-	else return false;
-	}*/
 	
+	
+	/**
+	 * Compare to.
+	 *
+	 * @param otra the otra
+	 * @return the int
+	 */
+	@Override
+	public int compareTo(Coordinate otra) {
+		if(this.x != otra.x) {
+			return this.x-otra.x;
+		}else {
+			return this.y - otra.y;
+		}
+	}
+	
+	/**
+	 * Gets the neighborhood.
+	 *
+	 * @return the neighborhood
+	 */
+	public TreeSet<Coordinate> getNeighborhood(){
+		TreeSet <Coordinate> vecinas = new TreeSet<Coordinate>();
+		for(int i=-1; i<=1; i++) {
+			for(int j=-1; j<=1; j++) {
+				if(i!=0 && j!=0)
+				vecinas.add(new Coordinate(x+i,y+j));
+			}
+		}
+	return vecinas;
+	}
+
+
 }
 
