@@ -238,8 +238,7 @@ public class ShipPreTest {
 	 	assertEquals (3, numberOfFightersOk("AWing"));
 		// haz las mismas comprobaciones para otros cazas que hayas destruido 
 		//assertEquals (??, numberOfFightersOk("?????"));
-		
-		fail("completa el test");
+	 	fail("completa el test");
 	}
 	
 	 
@@ -268,7 +267,7 @@ public class ShipPreTest {
 		(list.get(18)).addShield(-200);
 		(list.get(20)).addShield(-200);
 		(list.get(21)).addShield(-200);
-		assertEquals(kShow,ship.showFleet());
+		assertEquals(ship.showFleet(),kShow,ship.showFleet());
 	}
 
 	/* Comprueba que en una nave sin cazas, myFleet devuelve una cadena vacía
@@ -292,7 +291,12 @@ public class ShipPreTest {
 	 */
 	@Test
 	public void testMyFleet3() {
-		fail("completa el test");
+		ship.addFighters(kFleet1);
+		ship.addFighters(kFleet2);
+		ship.addFighters(kFleet21);
+		ship.getFleetTest().clear();
+		assertEquals("",ship.showFleet());
+		//fail("completa el test");
 	}
 	
 	/* Crea cazas en una nave. Destruye muchos y comprueba que showFleet solo devuelve
@@ -306,7 +310,7 @@ public class ShipPreTest {
 	/* Comprueba toString para una nave sin cazas */
 	@Test
 	public void testToString1() {
-		assertEquals ("Ship [Tydirium 0/0] ", ship.toString());
+		assertEquals (ship.toString(),"Ship [Tydirium 0/0] ", ship.toString());
 	}
 	
 	/* En una nave crea cazas. Comprueba que la salida con toString es correcta.
@@ -315,7 +319,7 @@ public class ShipPreTest {
 	public void testToString2() {
 		
 		ship.addFighters(kFleet1);
-		assertEquals (kToString1, ship.toString());
+		assertEquals (ship.toString(),kToString1, ship.toString());
 	}
 	
 	/* En una nave crea cazas y  modifica el número de luchas ganadas y perdidas de

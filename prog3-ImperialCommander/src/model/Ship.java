@@ -4,9 +4,7 @@
  */
 package model;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Optional;
 /**
  * The Class Ship.
  */
@@ -167,6 +165,7 @@ public class Ship {
 	 */
 	public String showFleet() {
 		String resultado = "";
+		if(fleet.size() != 0) {
 		for(int i=0; i < fleet.size(); i++) {
 			
 			resultado += fleet.get(i);
@@ -176,15 +175,16 @@ public class Ship {
 			resultado += "\n";
 		}
 		return resultado;
+		}
+		return "";
 	}
-	
 	/**
 	 * My fleet.
 	 *
 	 * @return the string
 	 */
 	public String myFleet() {
-	String resultado ="";
+	/*String resultado ="";
 	int contador = 0;
 		//IDEA=HACER COPIA DEFENSIVA Y EN UN BUCLE IR ELIMINANDO LOS DE LA MISMA CLASE CON CONTADOR
 		ArrayList<Fighter> copia = new ArrayList<>(fleet);
@@ -208,7 +208,7 @@ public class Ship {
 				copia.remove(0);
 			}while(copia.size()!=0);
 		}
-	return resultado;
+	return resultado;*/
 		//HACER UN ARRAY CON EL TIPO DE LOS SHIP Y OTRO CON LA CANTIDAD
 		/*ArrayList<Integer> num = new ArrayList(); 
 		ArrayList<String> type = new ArrayList();
@@ -250,6 +250,40 @@ public class Ship {
 		if(resultado.length()>0)
 		resultado=resultado.substring(0,resultado.length()-1);
 		return resultado;*/
+		//IDEA FUNCION A PARTE QUE COMPRUEBA QUE NO ESTA EL STRING EN EL ARRAY, OTRO QUE CUENTA CUANTOS HAY DE UN TIPO
+		String resultado = "";
+		ArrayList <String> hecho = new ArrayList <String>();
+		for(int i=0;i<fleet.size();i++) {
+			if(!estadentro(hecho, fleet.get(i).getType())) {
+				//Si no lo hemos cogido
+				hecho.add(fleet.get(i).getType());
+				resultado+=contador(fleet, fleet.get(i).getType()) + "/" + fleet.get(i).getType() +  ":";
+			}
+		}
+		resultado = Optional.ofNullable(resultado)
+				.filter(s -> s.length() != 0)
+				.map(s -> s.substring(0,s.length()-1))
+				.orElse(resultado);
+		return resultado;
+	}
+	
+	private int contador(ArrayList<Fighter> fleet,String tipo) {
+		int resultado = 0;
+		for(int i=0;i<fleet.size();i++) {
+			if(tipo.equals(fleet.get(i).getType())) {
+				resultado++;
+			}
+		}
+		return resultado;
+	}
+	
+	private boolean estadentro(ArrayList <String> hecho, String type) {
+		boolean resultado = false;
+		for(int i=0;i<hecho.size();i++) {
+			if(type.equals(hecho.get(i)))
+				resultado = true;
+		}
+		return resultado;
 	}
 	
 	/**
@@ -258,7 +292,7 @@ public class Ship {
 	 * @return the string
 	 */
 	public String toString() {
-		return "Ship [" + name + wins + "/" + losses + "] " + myFleet();
+		return "Ship [" + name + " " + wins + "/" + losses + "] " + myFleet();
 		
 	}
 }
