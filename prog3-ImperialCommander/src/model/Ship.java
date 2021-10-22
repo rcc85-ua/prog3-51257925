@@ -4,6 +4,7 @@
  */
 package model;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 /**
  * The Class Ship.
@@ -99,7 +100,6 @@ public class Ship {
 		for(int i=0; i< sep.length;i++) {
 			String[] sep2 = sep[i].split("/");
 			for(int j=0; j < Integer.valueOf(sep2[0]); j++) {
-				System.out.println(new Fighter(sep2[1], this));
 				fleet.add(new Fighter(sep2[1], this ));
 			}
 		}
@@ -292,7 +292,25 @@ public class Ship {
 	 * @return the string
 	 */
 	public String toString() {
-		return "Ship [" + name + " " + wins + "/" + losses + "] " + myFleet();
+		return "Ship" + " [" + name + " " + wins + "/" + losses + "] " + myFleet();
 		
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fleet, losses, name, position, side, wins);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ship other = (Ship) obj;
+		return Objects.equals(fleet, other.fleet) && losses == other.losses && Objects.equals(name, other.name)
+				&& Objects.equals(position, other.position) && side == other.side && wins == other.wins;
 	}
 }

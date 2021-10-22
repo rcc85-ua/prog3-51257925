@@ -104,7 +104,7 @@ public class FighterPreTest {
 		fighter.addShield(100);
 		assertEquals(180, fighter.getShield());
 		fighter.addShield(-20000);
-		assertEquals(0, fighter.getShield());
+		assertEquals(-19820, fighter.getShield());
 		assertTrue(fighter.isDestroyed());
 		//fail("completa el test"); // similar a los anteriores, pero con alguna diferencia
 	}

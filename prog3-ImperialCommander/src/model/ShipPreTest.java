@@ -223,6 +223,7 @@ public class ShipPreTest {
 	public void testPurgeFleet2() {
 		ship.addFighters(kFleet2);
 		
+		
 		destroy("XWing", 20);
 		destroy("AWing",7);
 		// completa el test con algunos destroy(...) más

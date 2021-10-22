@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -129,6 +131,8 @@ public class BoardPreTest {
 	public void testGetNeighborhood1() {
 		
 		Set<Coordinate> set = board.getNeighborhood(new Coordinate(0,0));
+		//0,1-1,0-1,1
+		//assertTrue(set.contains(new Coordinate(0,1)));
 		assertEquals(3, set.size());
 		assertTrue(set.contains(new Coordinate(0, 1)));
 		assertTrue(set.contains(new Coordinate(1, 0)));
@@ -213,9 +217,13 @@ public class BoardPreTest {
 		Fighter rebel = rebelShip.getFleetTest().get(0);
 		rebel.addAttack(100000);
 		rebel.addShield(900000000);
+		//el rebel se pone en 4,5, 
 		board.launch(c,rebel);
+		//recorre su vecindad y se pega con todos
 		board.patrol(rebel);
+		//ver si no ha muerto
 		assertEquals(rebel, board.getFighter(c));
+		//Ver si se han destruido los otros
 		for (Coordinate coord : c.getNeighborhood()) {
 		   assertNull(board.getFighter(coord));
 		}
@@ -234,7 +242,12 @@ public class BoardPreTest {
 		rebelShip.addFighters("1/ZWing");
 		Fighter rebel = rebelShip.getFleetTest().get(0);
 		rebel.addShield(300);
+		System.out.println(board.getFighter(c));
+		System.out.println("------------------------------------------");
 		board.launch(c,rebel); 
+		for(Coordinate barco : board.getNeighborhood(c)) {
+			System.out.println(board.getFighter(barco));
+		}
 		board.patrol(rebel); 
 		int i=0;
 		for (Coordinate coord : c.getNeighborhood()) {
@@ -244,6 +257,12 @@ public class BoardPreTest {
 			   assertNotNull(board.getFighter(coord));
 			i++;
 		}
+		System.out.println("-------------------------------------------------------");
+		for(Coordinate barco : board.getNeighborhood(c)) {
+			System.out.println(board.getFighter(barco));
+		}
+		System.out.println("---------------------------------------------------------");
+		System.out.println(board.getFighter(c));
 		assertNull(board.getFighter(c));
 		assertNull(rebel.getPosition());
 	}
