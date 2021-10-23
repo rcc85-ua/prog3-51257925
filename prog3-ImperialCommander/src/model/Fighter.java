@@ -224,7 +224,7 @@ public class Fighter {
 	 * @return the int
 	 */
 	public int fight(Fighter enemy) {
-		int n=0;
+		/*int n=0;
 		int umbral;
 		if (enemy.isDestroyed() || this.isDestroyed()) {
 			return 0;
@@ -252,6 +252,28 @@ public class Fighter {
 				return -1;
 			}
 
+		}*/
+		int n;
+		int umbral;
+		if(this.isDestroyed() || enemy.isDestroyed()) {
+			return 0;
+		}else {
+			while(!this.isDestroyed() && !enemy.isDestroyed()) {
+				n = RandomNumber.newRandomNumber(100);
+				umbral = (100*this.getVelocity())/(this.getVelocity()+enemy.getVelocity());
+				if(umbral<=n) {
+					//Ataca el caza
+					enemy.shield = enemy.shield - this.getDamage(n, enemy);
+				}else {
+					//Ataca enemy
+					this.shield = this.shield - enemy.getDamage(100 - n, this);
+				}
+			}
+			if(this.isDestroyed()) {
+				 return -1;
+			}else {
+				return 1;
+			}
 		}
 	}
 

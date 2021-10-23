@@ -242,12 +242,7 @@ public class BoardPreTest {
 		rebelShip.addFighters("1/ZWing");
 		Fighter rebel = rebelShip.getFleetTest().get(0);
 		rebel.addShield(300);
-		System.out.println(board.getFighter(c));
-		System.out.println("------------------------------------------");
 		board.launch(c,rebel); 
-		for(Coordinate barco : board.getNeighborhood(c)) {
-			System.out.println(board.getFighter(barco));
-		}
 		board.patrol(rebel); 
 		int i=0;
 		for (Coordinate coord : c.getNeighborhood()) {
@@ -257,11 +252,6 @@ public class BoardPreTest {
 			   assertNotNull(board.getFighter(coord));
 			i++;
 		}
-		System.out.println("-------------------------------------------------------");
-		for(Coordinate barco : board.getNeighborhood(c)) {
-			System.out.println(board.getFighter(barco));
-		}
-		System.out.println("---------------------------------------------------------");
 		System.out.println(board.getFighter(c));
 		assertNull(board.getFighter(c));
 		assertNull(rebel.getPosition());
