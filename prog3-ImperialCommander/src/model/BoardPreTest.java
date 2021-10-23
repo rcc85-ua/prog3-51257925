@@ -242,6 +242,7 @@ public class BoardPreTest {
 		rebelShip.addFighters("1/ZWing");
 		Fighter rebel = rebelShip.getFleetTest().get(0);
 		rebel.addShield(300);
+		System.out.println("El escudo es:" + rebel.getShield());
 		board.launch(c,rebel); 
 		board.patrol(rebel); 
 		int i=0;

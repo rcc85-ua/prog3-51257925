@@ -253,8 +253,8 @@ public class Fighter {
 			}
 
 		}*/
-		int n;
-		int umbral;
+		int n = 0;
+		int umbral = 0;
 		if(this.isDestroyed() || enemy.isDestroyed()) {
 			return 0;
 		}else {
@@ -264,9 +264,11 @@ public class Fighter {
 				if(umbral<=n) {
 					//Ataca el caza
 					enemy.shield = enemy.shield - this.getDamage(n, enemy);
+					System.out.println("vida enemigo: " + enemy.shield + " le han hecho de daño: " + this.getDamage(n, enemy));
 				}else {
 					//Ataca enemy
 					this.shield = this.shield - enemy.getDamage(100 - n, this);
+					System.out.println("vida del luchador: " + this.shield + " le han hecho de daño" + enemy.getDamage(100 -n , enemy));
 				}
 			}
 			if(this.isDestroyed()) {
