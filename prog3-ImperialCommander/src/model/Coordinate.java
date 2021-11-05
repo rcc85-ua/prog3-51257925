@@ -1,5 +1,5 @@
 /**
- * @author rayane Chelihi Chelouche 
+ * @author Rayane Chelihi Chelouche 
  * @author 51257925X
  */
 package model;
@@ -28,6 +28,7 @@ public class Coordinate implements Comparable<Coordinate> {
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
+		//System.out.println("Hecho");
 	}
 	
 	/**
@@ -143,10 +144,11 @@ public class Coordinate implements Comparable<Coordinate> {
 	 */
 	public TreeSet<Coordinate> getNeighborhood(){
 		TreeSet <Coordinate> vecinas = new TreeSet<Coordinate>();
-		for(int i=-1; i<=1; i++) {
-			for(int j=-1; j<=1; j++) {
-				if(i!=0 && j!=0)
+		for(int i=-1; i<2; i++) {
+			for(int j=-1; j<2; j++) {
+				if(i!=0 || j!=0) {
 				vecinas.add(new Coordinate(x+i,y+j));
+				}
 			}
 		}
 	return vecinas;

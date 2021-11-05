@@ -108,7 +108,7 @@ public class Fighter {
 	}
 
 	public void addAttack(int atk) {
-		if (attack + atk > 0) {
+		if (attack + atk >= 0) {
 			attack += atk;
 		} else {
 			attack = 0;
@@ -204,7 +204,7 @@ public class Fighter {
 	 * @return the damage
 	 */
 	public int getDamage(int n, Fighter enemy) {
-		return (n * this.attack) / DivAtk;
+		return (n * attack) / DivAtk;
 	}
 
 	/**
@@ -224,61 +224,39 @@ public class Fighter {
 	 * @return the int
 	 */
 	public int fight(Fighter enemy) {
-		/*int n=0;
+		int n = 0;
 		int umbral;
 		if (enemy.isDestroyed() || this.isDestroyed()) {
 			return 0;
 		} else {
-			while (!enemy.isDestroyed()  && !this.isDestroyed() ) {
+			while (!enemy.isDestroyed() && !this.isDestroyed()) {
 				n = RandomNumber.newRandomNumber(100);
 				// Umbral = (velocity*100)/(velocity1+velocity2)
-				umbral = (velocity * 100) / (this.velocity + enemy.velocity);
+				umbral = (velocity * 100) / (this.velocity + enemy.getVelocity());
 				// Si el umbral es <= que n el atacante sera caza y quita a enemigo el daño
 				// hecho por ()
 				if (umbral <= n) {
-					enemy.shield = enemy.shield - this.getDamage(n, enemy);
-					//	System.out.println("El enemigo tiene " + enemy.getShield()+ " de vida");
+					enemy.addShield(-enemy.getDamage(n, this));
+					System.out.println("El enemigo tiene" + enemy.getShield() + " De vida");
+					// System.out.println("El enemigo tiene " + enemy.getShield()+ " de vida");
 				} else {
-					this.shield = this.shield - enemy.getDamage(100 - n, this);
-					//System.out.println("El usuario tiene " + this.getShield()+ " de vida");
+					this.addShield(-getDamage(100 - n, enemy));
+					System.out.println("El usuario tiene " + this.getShield()+ " de vida");
 				}
 				// Si el umbral es > que n el atacante sera enemigo y quita a caza hecho por
 				// getDamage(100-n,)
 
-			} 
+			}
 			if (shield >= 0) {
 				return 1;
 			} else {
 				return -1;
 			}
 
-		}*/
-		int n = 0;
-		int umbral = 0;
-		if(this.isDestroyed() || enemy.isDestroyed()) {
-			return 0;
-		}else {
-			while(!this.isDestroyed() && !enemy.isDestroyed()) {
-				n = RandomNumber.newRandomNumber(100);
-				umbral = (100*this.getVelocity())/(this.getVelocity()+enemy.getVelocity());
-				if(umbral<=n) {
-					//Ataca el caza
-					enemy.shield = enemy.shield - this.getDamage(n, enemy);
-					System.out.println("vida enemigo: " + enemy.shield + " le han hecho de daño: " + this.getDamage(n, enemy));
-				}else {
-					//Ataca enemy
-					this.shield = this.shield - enemy.getDamage(100 - n, this);
-					System.out.println("vida del luchador: " + this.shield + " le han hecho de daño" + enemy.getDamage(100 -n , enemy));
-				}
-			}
-			if(this.isDestroyed()) {
-				 return -1;
-			}else {
-				return 1;
-			}
 		}
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(attack, id, motherShip, position, shield, type, velocity);

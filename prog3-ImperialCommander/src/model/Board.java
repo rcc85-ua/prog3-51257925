@@ -1,3 +1,7 @@
+/*
+ * @author Rayane Chelihi Chelouche
+ * @author 51257925X
+ */
 package model;
 
 import java.util.Map;
@@ -9,7 +13,7 @@ import java.util.TreeSet;
 /**
  * The Class Board.
  */
-/* NO SE HA HECHO NADA, VUELVE A MIRAR LA PRACTICA MANIN */
+
 public class Board {
 
 	/** The size. */
@@ -51,12 +55,12 @@ public class Board {
 
 	public Fighter getFighter(Coordinate c) {
 		Objects.requireNonNull(c);
-		if (board.containsKey(c) && !Objects.isNull(board.get(c))) {
-			return new Fighter(board.get(c));
-		} else {
-			return null;
+		Fighter f = null;
+		if (board.containsKey(c)) {
+			f = board.get(c);
+			f= new Fighter(board.get(c));
 		}
-
+		return f;
 	}
 
 	/**
@@ -75,11 +79,11 @@ public class Board {
 	 * @return true, if successful
 	 */
 	public boolean inside(Coordinate c) {
-		// Objects.requireNonNull(c);
+		 Objects.requireNonNull(c);
 		/*
 		 * if(board.containsKey(c)) { return true; }else { return false; }
 		 */
-		if (!Objects.isNull(c) && c.getX() < size && c.getY() < size && c.getX() >= 0 && c.getY() >= 0) {
+		if ((c.getX() < size && c.getY() < size) && (c.getX() >= 0 && c.getY() >= 0)) {
 			return true;
 		} else {
 			return false;
@@ -93,32 +97,16 @@ public class Board {
 	 * @return the neighborhood
 	 */
 	public TreeSet<Coordinate> getNeighborhood(Coordinate c) {
-		Coordinate coord = new Coordinate(0, 0);
+		//Coordinate coord = new Coordinate(0, 0);
 		Objects.requireNonNull(c);
-		TreeSet<Coordinate> vecinas = new TreeSet<Coordinate>();
-		// de la posicion -1 a la posicion 1
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j < 2; j++) {
-				// System.out.println(i+ " " + j);
-				// Si las coordenadas son >=0
-				if (c.getX() + i >= 0 && c.getY() + j >= 0) {
-					// System.out.println("Son mayor que 0");
-					// Si las coordenadas son menores que el tamaño del mapa
-					if (c.getX() + i < size && c.getY() + i < size) {
-						// System.out.println("Es menor que size");
-						if (!coord.equals(new Coordinate(i, j))) {
-							// System.out.println("No es la de enmedio");
-							vecinas.add(new Coordinate(c.getX() + i, c.getY() + j));
-
-						}
-
-					}
-
-				}
-
+		TreeSet<Coordinate> vecinas = c.getNeighborhood();
+		TreeSet<Coordinate> nuevo = new TreeSet<Coordinate>();
+		for(Coordinate coordenadas: vecinas) {
+			if(inside(coordenadas)) {
+				nuevo.add(coordenadas);
 			}
 		}
-		return vecinas;
+		return nuevo;
 	}
 
 	/**
@@ -166,60 +154,45 @@ public class Board {
 	 *
 	 * @param f the f
 	 */
-	/*
-	 * public void patrol(Fighter f) { if (board.containsValue(f)) { Coordinate
-	 * position = f.getPosition(); if (board.containsKey(position)) {
-	 * TreeSet<Coordinate> vecinas = position.getNeighborhood(); //por los
-	 * neighborhoods for (Coordinate coord : vecinas) { //Si la coordenada tiene
-	 * asignado un fighter del bando contrario if (board.get(coord).getSide() !=
-	 * f.getSide()) { //se pega con los de la posicion int result =
-	 * f.fight(board.get(coord)); //System.out.println(result); //Si gana if (result
-	 * == 1) { //Actualizamos las ganadas y perdidas
-	 * f.getMotherShip().updateResults(result);
-	 * board.get(coord).getMotherShip().updateResults(-result); //Borramos la
-	 * posicion del que ha perdido board.get(coord).setPosition(null);
-	 * board.remove(coord); //board.put(coord,null); //board.put(position, f);
-	 * //board.get(position).setPosition(position); } //Si pierde if (result == -1)
-	 * { //Actualizamos ganados y perdidos Ship madre = f.getMotherShip();
-	 * madre.updateResults(result); Ship madre2 = board.get(coord).getMotherShip();
-	 * madre2.updateResults(-result); //Borramos la posicion del que ha perdido
-	 * Fighter luchador= board.get(position);//.setPosition(null);
-	 * board.remove(position); luchador.setPosition(null); //board.put(position,
-	 * null); //board.remove(position); break; } } } } } }
-	 */
 	public void patrol(Fighter f) {
 		Objects.requireNonNull(f);
 		int resultado = 0;
+		Fighter nuestro = board.get(f.getPosition());
+		Fighter enemigo;
 		if (board.containsValue(f) && !Objects.isNull(f.getPosition())) {
-			Set<Coordinate> vecinas = this.getNeighborhood(f.getPosition());
+			Set<Coordinate> vecinas = getNeighborhood(f.getPosition());
+			
 			//Recorremos las vecinas
 			for (Coordinate coord : vecinas) {
-				//Si la coordenada no es nula
-				if (!Objects.isNull(coord)) {
+					enemigo = board.get(coord);
+					//System.out.println("El enemigo de la coordenada " + coord + "-----");
 					//Si la coordenada tiene un caza
-					if (!Objects.isNull(this.getFighter(coord))) {
+					if (!Objects.isNull(enemigo)) {
+						System.out.println("Tiene un enemigo :0");
 						//Si no son del mismo bando
-						if (!this.getFighter(coord).getSide().equals(f.getSide())) {
+						if (enemigo.getSide().equals(nuestro.getSide())) {
+							System.out.println("No son del mismo bando");
 							//Pelean
-							resultado = f.fight(this.getFighter(coord));
+							resultado = nuestro.fight(enemigo);
+							
 							//Actualizamos a las madres
-							f.getMotherShip().updateResults(resultado);
-							this.getFighter(coord).getMotherShip().updateResults(-resultado);
+							nuestro.getMotherShip().updateResults(resultado);
+							enemigo.getMotherShip().updateResults(-resultado);
+							
 							// f ha perdido
 							if (resultado == -1) {
-								f.setPosition(null);
-								this.removeFighter(f);
+								nuestro.setPosition(null);
+								board.remove(f.getPosition());
+								System.out.println("EL PROTA HA PERDIDO");
+								break;
 							} else if (resultado == 1) {
-								this.getFighter(coord).setPosition(null);
-								this.removeFighter(this.getFighter(coord));
-							} else {
-
+								System.out.println("EL PROTA HA GANADO");
+								enemigo.setPosition(null);
+								board.remove(enemigo.getPosition());
 							}
-
 						}
 					}
 				}
 			}
 		}
-	}
 }
