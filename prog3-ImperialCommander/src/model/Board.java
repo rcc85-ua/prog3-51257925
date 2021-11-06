@@ -168,10 +168,10 @@ public class Board {
 					//System.out.println("El enemigo de la coordenada " + coord + "-----");
 					//Si la coordenada tiene un caza
 					if (!Objects.isNull(enemigo)) {
-						System.out.println("Tiene un enemigo :0");
+						//System.out.println("Tiene un enemigo :0");
 						//Si no son del mismo bando
-						if (enemigo.getSide().equals(nuestro.getSide())) {
-							System.out.println("No son del mismo bando");
+						if (!enemigo.getSide().equals(nuestro.getSide())) {
+							//System.out.println("No son del mismo bando: " + enemigo.getSide() +"-----" +nuestro.getSide());
 							//Pelean
 							resultado = nuestro.fight(enemigo);
 							
@@ -183,13 +183,15 @@ public class Board {
 							if (resultado == -1) {
 								nuestro.setPosition(null);
 								board.remove(f.getPosition());
-								System.out.println("EL PROTA HA PERDIDO");
+								//System.out.println("EL PROTA HA PERDIDO");
 								break;
 							} else if (resultado == 1) {
-								System.out.println("EL PROTA HA GANADO");
+								//System.out.println("EL PROTA HA GANADO");
 								enemigo.setPosition(null);
 								board.remove(enemigo.getPosition());
 							}
+						}else {
+							//System.out.println("Son del mismo bando: " + enemigo.getSide() + "-----" + nuestro.getSide());
 						}
 					}
 				}
