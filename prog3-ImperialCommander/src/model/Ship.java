@@ -5,7 +5,11 @@
 package model;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
+//import java.util.Optional;
+
+import model.exceptions.NoFighterAvailableException;
+import model.fighters.*;
+
 /**
  * The Class Ship.
  */
@@ -100,7 +104,32 @@ public class Ship {
 		for(int i=0; i< sep.length;i++) {
 			String[] sep2 = sep[i].split("/");
 			for(int j=0; j < Integer.valueOf(sep2[0]); j++) {
-				fleet.add(new Fighter(sep2[1], this ));
+				switch(sep2[1]) {
+				case "AWing":
+					Fighter f = new AWing(this);
+					fleet.add(f);
+					break;
+				case "XWing":
+					Fighter f1 = new XWing(this);
+					fleet.add(f1);
+					break;
+				case "YWing":
+					Fighter f2 = new YWing(this);
+					fleet.add(f2);
+					break;
+				case "TIEBomber":
+					Fighter f3 = new TIEBomber(this);
+					fleet.add(f3);
+					break;
+				case "TIEFighter":
+					Fighter f4 = new TIEFighter(this);
+					fleet.add(f4);
+					break;
+				case "TIEInterceptor":
+					Fighter f5 = new TIEInterceptor(this);
+					fleet.add(f5);
+					break;
+				}
 			}
 		}
 	}
@@ -128,24 +157,31 @@ public class Ship {
 	 *
 	 * @param type the type
 	 * @return the first available fighter
+	 * @throws NoFighterAvailableException the no fighter available exception
 	 */
-	public Fighter getFirstAvailableFighter(String type) {
+	public Fighter getFirstAvailableFighter(String type) throws NoFighterAvailableException{
 		boolean comp = false;
-		int resp = 0;
-		//Recorremos todo el array
-		for(int i = 0; i< fleet.size(); i++) {
-			//Si el tipo es igual al parametro, no esta destruido y no hemos cogido antes a ninguno
-			if(fleet.get(i).getType().equals(type) && !fleet.get(i).isDestroyed() && !comp) {
-				resp = i;
-				comp = true;
-			}
+		Fighter f = null;
+				for(int i = 0; i< fleet.size(); i++) {
+				//Si el tipo es igual al parametro, no esta destruido y no hemos cogido antes a ninguno
+					if(!fleet.get(i).isDestroyed() && !comp) {
+					if(type.isEmpty()) {
+						comp = true;
+						f = fleet.get(i);
+					}else {
+					if(fleet.get(i).getType().equals(type)) {
+						f = fleet.get(i);
+						comp = true;
+					}
+				}
+				}
+				}
+				if(comp) {
+					return f;
+				}else {
+					throw new NoFighterAvailableException();
+				}
 		}
-		if(comp) {
-			return fleet.get(resp);
-		}else {
-			return null;
-		}
-	}
 	
 	/**
 	 * Purge fleet.
@@ -154,6 +190,7 @@ public class Ship {
 		for(int i=0; i< fleet.size(); i++) {
 			if(fleet.get(i).isDestroyed()) {
 				fleet.remove(i);
+				i--;
 			}
 		}
 	}
@@ -183,42 +220,52 @@ public class Ship {
 	 *
 	 * @return the string
 	 */
-	public String myFleet() {
-		//IDEA FUNCION A PARTE QUE COMPRUEBA QUE NO ESTA EL STRING EN EL ARRAY, OTRO QUE CUENTA CUANTOS HAY DE UN TIPO
-		String resultado = "";
-		ArrayList <String> hecho = new ArrayList <String>();
-		for(int i=0;i<fleet.size();i++) {
-			if(!estadentro(hecho, fleet.get(i).getType())) {
-				//Si no lo hemos cogido
-				hecho.add(fleet.get(i).getType());
-				resultado+=contador(fleet, fleet.get(i).getType()) + "/" + fleet.get(i).getType() +  ":";
+		public String myFleet() {
+			
+			ArrayList<String> cazas = new ArrayList<String>();
+			
+			StringBuilder sb = new StringBuilder();
+			
+			int cuenta = 0;
+				
+			for( int i = 0; i < fleet.size(); i++) {		
+				
+				if(!cazas.contains(fleet.get(i).getType())) {
+					
+					cazas.add(fleet.get(i).getType());
+				}
+				
 			}
+			
+			for(int i = 0; i < cazas.size(); i++) {
+				
+				for(int j = 0; j < fleet.size(); j++) {
+					
+					if(cazas.get(i).equals(fleet.get(j).getType()) 
+						&& ! fleet.get(j).isDestroyed()) {
+						
+						cuenta++;
+					}
+				}
+				if(cuenta != 0) {
+					
+				if(i != 0) { sb.append(":"); }
+				
+				sb.append(cuenta);
+				sb.append("/");
+				sb.append(cazas.get(i));
+				
+				cuenta = 0;
+				
+				}
+				
+			}	
+					
+			String cadena = sb.toString();
+			
+			return cadena;
+			
 		}
-		resultado = Optional.ofNullable(resultado)
-				.filter(s -> s.length() != 0)
-				.map(s -> s.substring(0,s.length()-1))
-				.orElse(resultado);
-		return resultado;
-	}
-	
-	private int contador(ArrayList<Fighter> fleet,String tipo) {
-		int resultado = 0;
-		for(int i=0;i<fleet.size();i++) {
-			if(tipo.equals(fleet.get(i).getType())) {
-				resultado++;
-			}
-		}
-		return resultado;
-	}
-	
-	private boolean estadentro(ArrayList <String> hecho, String type) {
-		boolean resultado = false;
-		for(int i=0;i<hecho.size();i++) {
-			if(type.equals(hecho.get(i)))
-				resultado = true;
-		}
-		return resultado;
-	}
 	
 	/**
 	 * To string.
@@ -230,11 +277,22 @@ public class Ship {
 		
 	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(fleet, losses, name, position, side, wins);
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

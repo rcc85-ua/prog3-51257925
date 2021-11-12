@@ -2,14 +2,18 @@
  * @author rayane Chelihi Chelouche 
  * @author 51257925X
  */
+
 package model;
 
 import java.util.Objects;
 
+import model.exceptions.FighterIsDestroyedException;
+
+
 /**
  * The Class Fighter.
  */
-public class Fighter {
+public abstract class Fighter {
 
 	/** The Constant DivAtk. */
 	static final int DivAtk = 300;
@@ -17,8 +21,6 @@ public class Fighter {
 	/** The next id. */
 	private static int nextId = 1;
 
-	/** The type. */
-	private String type;
 
 	/** The velocity. */
 	private int velocity;
@@ -41,32 +43,36 @@ public class Fighter {
 	/**
 	 * Instantiates a new fighter.
 	 *
-	 * @param type   the type
 	 * @param mother the mother
 	 */
 	/* TE HAS IDO A HACER LA CLASE SHIP */
-	Fighter(String type, Ship mother) {
+	protected Fighter(Ship mother) {
 		velocity = 100;
 		attack = 80;
 		shield = 80;
-		this.type = type;
 		id = nextId;
 		nextId++;
 		motherShip = mother;
 		position = null;
 	}
+	
+	/**
+	 * Copy.
+	 *
+	 * @return the fighter
+	 */
+	public abstract Fighter copy();
 
 	/**
 	 * Instantiates a new fighter.
 	 *
 	 * @param f the f
 	 */
-	public Fighter(Fighter f) {
+	protected Fighter(Fighter f) {
 		id = f.id;
 		velocity = f.velocity; // NO SON UNA REFERENCIA
 		attack = f.attack;
 		shield = f.shield;
-		type = f.type;
 		motherShip = f.motherShip;
 		position = f.position;
 	}
@@ -101,12 +107,17 @@ public class Fighter {
 	/**
 	 * Adds the attack.
 	 *
-	 * @param atk the atk
+	 * @return the mother ship
 	 */
 	public Ship getMotherShip() {
 		return motherShip;
 	}
 
+	/**
+	 * Adds the attack.
+	 *
+	 * @param atk the atk
+	 */
 	public void addAttack(int atk) {
 		if (attack + atk >= 0) {
 			attack += atk;
@@ -143,9 +154,15 @@ public class Fighter {
 	 * @return the type
 	 */
 	public String getType() {
-		return type;
+		return getClass().getSimpleName();
 	}
 
+	/**
+	 * Gets the symbol.
+	 *
+	 * @return the symbol
+	 */
+	public abstract char getSymbol();
 	/**
 	 * Reset next id.
 	 */
@@ -153,6 +170,11 @@ public class Fighter {
 		nextId = 1;
 	}
 
+	/**
+	 * Sets the position.
+	 *
+	 * @param c the new position
+	 */
 	public void setPosition(Coordinate c) {
 		position = c;
 	}
@@ -213,7 +235,7 @@ public class Fighter {
 	 * @return the string
 	 */
 	public String toString() {
-		return "(" + type + " " + id + " " + motherShip.getSide() + " " + position + " {" + velocity + "," + attack
+		return "(" + getType() + " " + id + " " + motherShip.getSide() + " " + position + " {" + velocity + "," + attack
 				+ "," + shield + "})";
 	}
 
@@ -222,29 +244,27 @@ public class Fighter {
 	 *
 	 * @param enemy the enemy
 	 * @return the int
+	 * @throws FighterIsDestroyedException the fighter is destroyed exception
 	 */
-	public int fight(Fighter enemy) {
+	public int fight(Fighter enemy) throws FighterIsDestroyedException{
 		int n = 0;
 		int umbral;
 		if (enemy.isDestroyed() || this.isDestroyed()) {
-			return 0;
+			throw new FighterIsDestroyedException();
 		} else {
 			while (!enemy.isDestroyed() && !this.isDestroyed()) {
 				n = RandomNumber.newRandomNumber(100);
-				// Umbral = (velocity*100)/(velocity1+velocity2)
 				umbral = (velocity * 100) / (this.velocity + enemy.getVelocity());
 				// Si el umbral es <= que n el atacante sera caza y quita a enemigo el daño
 				// hecho por ()
 				if (umbral <= n) {
-					enemy.addShield(-enemy.getDamage(n, this));
-					System.out.println("El enemigo tiene" + enemy.getShield() + " De vida");
+					enemy.shield = enemy.shield - this.getDamage(n,enemy);
 					// System.out.println("El enemigo tiene " + enemy.getShield()+ " de vida");
 				} else {
-					this.addShield(-getDamage(100 - n, enemy));
-					System.out.println("El usuario tiene " + this.getShield()+ " de vida");
+					this.shield = this.shield - enemy.getDamage(100-n, this);
+					//System.out.println("El usuario tiene " + this.getShield()+ " de vida");
 				}
-				// Si el umbral es > que n el atacante sera enemigo y quita a caza hecho por
-				// getDamage(100-n,)
+				
 
 			}
 			if (shield >= 0) {
@@ -257,11 +277,22 @@ public class Fighter {
 	}
 
 	
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(attack, id, motherShip, position, shield, type, velocity);
+		return Objects.hash(attack, id, motherShip, position, shield, getType(), velocity);
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -273,6 +304,6 @@ public class Fighter {
 		Fighter other = (Fighter) obj;
 		return attack == other.attack && id == other.id && Objects.equals(motherShip, other.motherShip)
 				&& Objects.equals(position, other.position) && shield == other.shield
-				&& Objects.equals(type, other.type) && velocity == other.velocity;
+				&& Objects.equals(getType(), other.getType()) && velocity == other.velocity;
 	}
 }

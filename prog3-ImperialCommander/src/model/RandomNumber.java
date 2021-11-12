@@ -3,25 +3,24 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+
 /**
- * clase para generar números aleatorios
- * @author paco
+ * clase para generar números aleatorios.
  *
+ * @author paco
  */
 public class RandomNumber {
 
-	/**
-	 * generador de números aleatorios
-	 */
+	/** generador de números aleatorios. */
 	private static Random generator = new Random(1L);
 	
-	/**
-	 * lista de números generados (para debug)
-	 */
+	/** lista de números generados (para debug). */
 	private static List<Integer> list = new ArrayList<Integer>();
 	
 	/**
-	 * genera un número aleatorio entre 0 y max-1
+	 * genera un número aleatorio entre 0 y max-1.
+	 *
 	 * @param max indica el máximo valor (no incluido)
 	 * @return número aleatorio entre 0 y max-1
 	 */
@@ -32,7 +31,8 @@ public class RandomNumber {
 	}
 	
 	/**
-	 * getter (debug)
+	 * getter (debug).
+	 *
 	 * @return lista de números generados
 	 */
 	public static List<Integer> getRandomNumberList() {
@@ -40,7 +40,7 @@ public class RandomNumber {
 	}
 	
 	/**
-	 * reinicializa el generador y la lista, para las pruebas unitarias
+	 * reinicializa el generador y la lista, para las pruebas unitarias.
 	 */
 	public static void resetRandomCounter() {
         list.clear();

@@ -4,6 +4,7 @@
  */
 package model;
 
+
 /**
  * The Enum Side.
  */
