@@ -12,7 +12,6 @@ import java.util.TreeSet;
 
 import model.exceptions.*;
 
-
 /**
  * The Class Board.
  */
@@ -21,9 +20,9 @@ public class Board {
 
 	/** The size. */
 	private int size;
-	
+
 	/** The board. */
-	private Map<Coordinate, Fighter> board;
+	protected Map<Coordinate, Fighter> board;
 
 	/**
 	 * Instantiates a new board.
@@ -31,9 +30,9 @@ public class Board {
 	 * @param size the size
 	 * @throws InvalidSizeException the invalid size exception
 	 */
-	public Board(int size) throws InvalidSizeException{
+	public Board(int size) throws InvalidSizeException {
 		Objects.requireNonNull(size);
-		if(size<5) {
+		if (size < 5) {
 			throw new InvalidSizeException(size);
 		}
 		this.size = size;
@@ -47,7 +46,7 @@ public class Board {
 	 * @return the fighter
 	 * @throws FighterNotInBoardException the fighter not in board exception
 	 */
-	public boolean removeFighter(Fighter f) throws FighterNotInBoardException{
+	public boolean removeFighter(Fighter f) throws FighterNotInBoardException {
 		Objects.requireNonNull(f);
 		if (f.getPosition() != null) {
 			Coordinate c = new Coordinate(f.getPosition());
@@ -73,7 +72,7 @@ public class Board {
 		Fighter f = null;
 		if (board.containsKey(c)) {
 			f = board.get(c).copy();
-			//f = new Fighter(board.get(c));
+			// f = new Fighter(board.get(c));
 		}
 		return f;
 	}
@@ -94,15 +93,15 @@ public class Board {
 	 * @return true, if successful
 	 * @throws OutOfBoundsException the out of bounds exception
 	 */
-	public boolean inside(Coordinate c) throws OutOfBoundsException{
+	public boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);
 		/*
 		 * if(board.containsKey(c)) { return true; }else { return false; }
 		 */
-		
+
 		if ((c.getX() < size && c.getY() < size) && (c.getX() >= 0 && c.getY() >= 0)) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 
@@ -115,19 +114,19 @@ public class Board {
 	 * @return the neighborhood
 	 * @throws OutOfBoundsException the out of bounds exception
 	 */
-	public TreeSet<Coordinate> getNeighborhood(Coordinate c)throws OutOfBoundsException{
+	public TreeSet<Coordinate> getNeighborhood(Coordinate c) throws OutOfBoundsException {
 		// Coordinate coord = new Coordinate(0, 0);
 		Objects.requireNonNull(c);
-		if(inside(c)) {
-		TreeSet<Coordinate> vecinas = c.getNeighborhood();
-		TreeSet<Coordinate> nuevo = new TreeSet<Coordinate>();
-		for (Coordinate coordenadas : vecinas) {
+		if (inside(c)) {
+			TreeSet<Coordinate> vecinas = c.getNeighborhood();
+			TreeSet<Coordinate> nuevo = new TreeSet<Coordinate>();
+			for (Coordinate coordenadas : vecinas) {
 				if (inside(coordenadas)) {
 					nuevo.add(coordenadas);
 				}
-		}
-		return nuevo;
-		}else {
+			}
+			return nuevo;
+		} else {
 			throw new OutOfBoundsException(c);
 		}
 
@@ -140,14 +139,14 @@ public class Board {
 	 * @param f the f
 	 * @return the int
 	 * @throws FighterAlreadyInBoardException the fighter already in board exception
-	 * @throws OutOfBoundsException the out of bounds exception
+	 * @throws OutOfBoundsException           the out of bounds exception
 	 */
-	public int launch(Coordinate c, Fighter f) throws FighterAlreadyInBoardException, OutOfBoundsException{
+	public int launch(Coordinate c, Fighter f) throws FighterAlreadyInBoardException, OutOfBoundsException {
 		Objects.requireNonNull(c);
 		Objects.requireNonNull(f);
 		int result = 0;
-		if(!Objects.isNull(f.getPosition())) {
-			throw new FighterAlreadyInBoardException(f.getPosition(),c);
+		if (!Objects.isNull(f.getPosition())) {
+			throw new FighterAlreadyInBoardException(f.getPosition(), c);
 		}
 		// Si la coordenada esta en el tablero
 		if (inside(c)) {
@@ -160,8 +159,8 @@ public class Board {
 				if (board.get(c).getSide() != f.getSide()) {
 					// Se pelean
 					try {
-					result = f.fight(board.get(c));
-					}catch(Exception FighterIsDestroyed) {
+						result = f.fight(board.get(c));
+					} catch (Exception FighterIsDestroyed) {
 						throw new RuntimeException();
 					}
 					// Actualizamos los resultados de la madre
@@ -195,25 +194,25 @@ public class Board {
 		Fighter enemigo;
 		if (board.containsValue(f) && !Objects.isNull(f.getPosition())) {
 			try {
-			vecinas = getNeighborhood(f.getPosition());
-			}catch(Exception OutOfBoundsException) {
+				vecinas = getNeighborhood(f.getPosition());
+			} catch (Exception OutOfBoundsException) {
 				throw new RuntimeException();
 			}
 			// Recorremos las vecinas
 			for (Coordinate coord : vecinas) {
-					enemigo = board.get(coord);
+				enemigo = board.get(coord);
 				// System.out.println("El enemigo de la coordenada " + coord + "-----");
 				// Si la coordenada tiene un caza
 				if (!Objects.isNull(enemigo)) {
 					// System.out.println("Tiene un enemigo :0");
 					// Si no son del mismo bando
-					if (!enemigo.getSide().equals(nuestro.getSide())){
+					if (!enemigo.getSide().equals(nuestro.getSide())) {
 						// System.out.println("No son del mismo bando: " + enemigo.getSide() +"-----"
 						// +nuestro.getSide());
 						// Pelean
 						try {
-						resultado = nuestro.fight(enemigo);
-						}catch(Exception FighterIsDestroyed) {
+							resultado = nuestro.fight(enemigo);
+						} catch (Exception FighterIsDestroyed) {
 							throw new RuntimeException();
 						}
 						// Actualizamos a las madres

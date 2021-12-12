@@ -47,6 +47,7 @@ public abstract class Fighter {
 	 */
 	/* TE HAS IDO A HACER LA CLASE SHIP */
 	protected Fighter(Ship mother) {
+		Objects.requireNonNull(mother);
 		velocity = 100;
 		attack = 80;
 		shield = 80;
@@ -226,6 +227,8 @@ public abstract class Fighter {
 	 * @return the damage
 	 */
 	public int getDamage(int n, Fighter enemy) {
+		Objects.requireNonNull(n);
+		Objects.requireNonNull(enemy);
 		return (n * attack) / DivAtk;
 	}
 
@@ -247,6 +250,7 @@ public abstract class Fighter {
 	 * @throws FighterIsDestroyedException the fighter is destroyed exception
 	 */
 	public int fight(Fighter enemy) throws FighterIsDestroyedException{
+		Objects.requireNonNull(enemy);
 		int n = 0;
 		int umbral;
 		if (enemy.isDestroyed() || this.isDestroyed()) {

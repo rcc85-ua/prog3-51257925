@@ -3,6 +3,7 @@
  * @author 51257925X
  */
 package model;
+
 import java.util.ArrayList;
 import java.util.Objects;
 //import java.util.Optional;
@@ -14,25 +15,25 @@ import model.fighters.*;
  * The Class Ship.
  */
 public class Ship {
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The side. */
 	private Side side;
-	
+
 	/** The wins. */
 	private int wins;
-	
+
 	/** The losses. */
 	private int losses;
-	
+
 	/** The fleet. */
-	private ArrayList<Fighter> fleet;
-	
+	protected ArrayList<Fighter> fleet;
+
 	/** The position. */
 	Coordinate position;
-	
+
 	/**
 	 * Instantiates a new ship.
 	 *
@@ -40,6 +41,8 @@ public class Ship {
 	 * @param side the side
 	 */
 	public Ship(String name, Side side) {
+		Objects.requireNonNull(name);
+		Objects.requireNonNull(side);
 		wins = 0;
 		losses = 0;
 		this.name = name;
@@ -55,7 +58,7 @@ public class Ship {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Gets the side.
 	 *
@@ -64,7 +67,7 @@ public class Ship {
 	public Side getSide() {
 		return side;
 	}
-	
+
 	/**
 	 * Gets the wins.
 	 *
@@ -73,7 +76,7 @@ public class Ship {
 	public int getWins() {
 		return wins;
 	}
-	
+
 	/**
 	 * Gets the losses.
 	 *
@@ -82,29 +85,30 @@ public class Ship {
 	public int getLosses() {
 		return losses;
 	}
-	
+
 	/**
 	 * Gets the fleet test.
 	 *
 	 * @return the fleet test
 	 */
-	public ArrayList<Fighter> getFleetTest(){
+	public ArrayList<Fighter> getFleetTest() {
 		return fleet;
 	}
-	
+
 	/**
 	 * Adds the fighters.
 	 *
 	 * @param fd the fd
 	 */
-	//PENDIENTE DE REVISION(HAZ MUCHAS PRUEBAS UNITARIAS QUE PUEDE FALLAR FACIL)
+	// PENDIENTE DE REVISION(HAZ MUCHAS PRUEBAS UNITARIAS QUE PUEDE FALLAR FACIL)
 	public void addFighters(String fd) {
-		
+		Objects.requireNonNull(fd);
+
 		String[] sep = fd.split(":");
-		for(int i=0; i< sep.length;i++) {
+		for (int i = 0; i < sep.length; i++) {
 			String[] sep2 = sep[i].split("/");
-			for(int j=0; j < Integer.valueOf(sep2[0]); j++) {
-				switch(sep2[1]) {
+			for (int j = 0; j < Integer.valueOf(sep2[0]); j++) {
+				switch (sep2[1]) {
 				case "AWing":
 					Fighter f = new AWing(this);
 					fleet.add(f);
@@ -140,7 +144,7 @@ public class Ship {
 	 * @param r the r
 	 */
 	public void updateResults(int r) {
-		switch(r) {
+		switch (r) {
 		case 1:
 			wins++;
 			break;
@@ -151,7 +155,7 @@ public class Ship {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Gets the first available fighter.
 	 *
@@ -159,42 +163,48 @@ public class Ship {
 	 * @return the first available fighter
 	 * @throws NoFighterAvailableException the no fighter available exception
 	 */
-	public Fighter getFirstAvailableFighter(String type) throws NoFighterAvailableException{
+	public Fighter getFirstAvailableFighter(String type) throws NoFighterAvailableException {
+		Objects.requireNonNull(type);
 		boolean comp = false;
 		Fighter f = null;
-				for(int i = 0; i< fleet.size(); i++) {
-				//Si el tipo es igual al parametro, no esta destruido y no hemos cogido antes a ninguno
-					if(!fleet.get(i).isDestroyed() && !comp) {
-					if(type.isEmpty()) {
+		for (int i = 0; i < fleet.size(); i++) {
+			// Si el tipo es igual al parametro, no esta destruido y no hemos cogido antes a
+			// ninguno
+			if (!fleet.get(i).isDestroyed() && !comp) {
+				if (fleet.get(i).getPosition() == null) {
+					if (type.isEmpty()) {
 						comp = true;
 						f = fleet.get(i);
-					}else {
-					if(fleet.get(i).getType().equals(type)) {
-						f = fleet.get(i);
-						comp = true;
+						break;
+					} else if(!type.equals("notablero")) {
+						if (fleet.get(i).getType().equals(type)) {
+							f = fleet.get(i);
+							comp = true;
+							break;
+						}
 					}
 				}
-				}
-				}
-				if(comp) {
-					return f;
-				}else {
-					throw new NoFighterAvailableException();
-				}
+			}
 		}
-	
+		if (comp) {
+			return f;
+		} else {
+			throw new NoFighterAvailableException();
+		}
+	}
+
 	/**
 	 * Purge fleet.
 	 */
 	public void purgeFleet() {
-		for(int i=0; i< fleet.size(); i++) {
-			if(fleet.get(i).isDestroyed()) {
+		for (int i = 0; i < fleet.size(); i++) {
+			if (fleet.get(i).isDestroyed()) {
 				fleet.remove(i);
 				i--;
 			}
 		}
 	}
-	
+
 	/**
 	 * Show fleet.
 	 *
@@ -202,71 +212,73 @@ public class Ship {
 	 */
 	public String showFleet() {
 		String resultado = "";
-		if(fleet.size() != 0) {
-		for(int i=0; i < fleet.size(); i++) {
-			
-			resultado += fleet.get(i);
-			if(fleet.get(i).isDestroyed()) {
-				resultado += " (X)";
+		if (fleet.size() != 0) {
+			for (int i = 0; i < fleet.size(); i++) {
+
+				resultado += fleet.get(i);
+				if (fleet.get(i).isDestroyed()) {
+					resultado += " (X)";
+				}
+				resultado += "\n";
 			}
-			resultado += "\n";
-		}
-		return resultado;
+			return resultado;
 		}
 		return "";
 	}
+
 	/**
 	 * My fleet.
 	 *
 	 * @return the string
 	 */
-		public String myFleet() {
-			
-			ArrayList<String> cazas = new ArrayList<String>();
-			
-			StringBuilder sb = new StringBuilder();
-			
-			int cuenta = 0;
-				
-			for( int i = 0; i < fleet.size(); i++) {		
-				
-				if(!cazas.contains(fleet.get(i).getType())) {
-					
-					cazas.add(fleet.get(i).getType());
-				}
-				
+	public String myFleet() {
+
+		ArrayList<String> cazas = new ArrayList<String>();
+
+		StringBuilder sb = new StringBuilder();
+
+		int cuenta = 0;
+
+		for (int i = 0; i < fleet.size(); i++) {
+
+			if (!cazas.contains(fleet.get(i).getType())) {
+
+				cazas.add(fleet.get(i).getType());
 			}
-			
-			for(int i = 0; i < cazas.size(); i++) {
-				
-				for(int j = 0; j < fleet.size(); j++) {
-					
-					if(cazas.get(i).equals(fleet.get(j).getType()) 
-						&& ! fleet.get(j).isDestroyed()) {
-						
-						cuenta++;
-					}
+
+		}
+
+		for (int i = 0; i < cazas.size(); i++) {
+
+			for (int j = 0; j < fleet.size(); j++) {
+
+				if (cazas.get(i).equals(fleet.get(j).getType()) && !fleet.get(j).isDestroyed()) {
+
+					cuenta++;
 				}
-				if(cuenta != 0) {
-					
-				if(i != 0) { sb.append(":"); }
-				
+			}
+			if (cuenta != 0) {
+
+				if (i != 0) {
+					sb.append(":");
+				}
+
 				sb.append(cuenta);
 				sb.append("/");
 				sb.append(cazas.get(i));
-				
+
 				cuenta = 0;
-				
-				}
-				
-			}	
-					
-			String cadena = sb.toString();
-			
-			return cadena;
-			
+
+			}
+
 		}
-	
+
+		String cadena = sb.toString();
+
+		return cadena;
+
+	}
+
 	/**
 	 * To string.
 	 *
@@ -274,7 +286,7 @@ public class Ship {
 	 */
 	public String toString() {
 		return "Ship" + " [" + name + " " + wins + "/" + losses + "] " + myFleet();
-		
+
 	}
 
 	/**

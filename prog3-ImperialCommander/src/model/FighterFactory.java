@@ -3,6 +3,8 @@
  */
 package model;
 
+import java.util.Objects;
+
 import model.fighters.*;
 
 
@@ -19,6 +21,8 @@ public class FighterFactory {
 	 * @return the fighter
 	 */
 	public static Fighter createFighter(String type, Ship Mother){
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(Mother);
 		switch(type) {
 		case "XWing":
 			return new XWing(Mother);
