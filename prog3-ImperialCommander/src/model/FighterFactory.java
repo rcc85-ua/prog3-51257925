@@ -5,8 +5,6 @@ package model;
 
 import java.util.Objects;
 
-import model.fighters.*;
-
 
 /**
  * A factory for creating Fighter objects.
@@ -23,7 +21,15 @@ public class FighterFactory {
 	public static Fighter createFighter(String type, Ship Mother){
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(Mother);
-		switch(type) {
+		try {
+		return (Fighter) Class.forName("model.fighters." + type).getConstructor(Ship.class).newInstance(Mother);
+		}catch(Exception | NoClassDefFoundError e) {
+			return null;
+		}
+		/*Method creador = c.getDeclaredMethod(, Mother);
+		*/
+		
+		/*switch(type) {
 		case "XWing":
 			return new XWing(Mother);
 		case "YWing":
@@ -39,5 +45,6 @@ public class FighterFactory {
 		default:
 			return null;
 		}
+	}*/
 	}
 }

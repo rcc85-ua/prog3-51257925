@@ -78,6 +78,11 @@ public abstract class Fighter {
 		position = f.position;
 	}
 
+	
+	
+	public int getValue() {
+		return velocity+attack;
+	}
 	/**
 	 * Gets the shield.
 	 *
@@ -239,7 +244,7 @@ public abstract class Fighter {
 	 */
 	public String toString() {
 		return "(" + getType() + " " + id + " " + motherShip.getSide() + " " + position + " {" + velocity + "," + attack
-				+ "," + shield + "})";
+				+ "," + shield + "})"; 
 	}
 
 	/**

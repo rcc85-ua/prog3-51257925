@@ -1,4 +1,5 @@
-/* @author Rayane Chelihi Chelouche
+/* 
+ * @author Rayane Chelihi Chelouche
  * @author 51257925X
  */
 package model.exceptions;
@@ -8,8 +9,6 @@ import model.Coordinate;
 /**
  * The Class OutOfBoundsException.
  */
-/*Si la coordenada donde tenemos que poner el caza o
- *  de la que queremos la vecindad esta fuera del tablero*/
 @SuppressWarnings("serial")
 public class OutOfBoundsException extends Exception{
 	

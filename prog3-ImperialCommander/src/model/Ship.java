@@ -143,7 +143,7 @@ public class Ship {
 	 *
 	 * @param r the r
 	 */
-	public void updateResults(int r) {
+	public void updateResults(int r, Fighter luchador) {
 		switch (r) {
 		case 1:
 			wins++;
@@ -157,7 +157,8 @@ public class Ship {
 	}
 
 	/**
-	 * Gets the first available fighter.
+	 * Gets the first available fighter, escribir notablero para conseguir que no
+	 * este en el tablero.
 	 *
 	 * @param type the type
 	 * @return the first available fighter
@@ -165,32 +166,29 @@ public class Ship {
 	 */
 	public Fighter getFirstAvailableFighter(String type) throws NoFighterAvailableException {
 		Objects.requireNonNull(type);
-		boolean comp = false;
-		Fighter f = null;
+		//boolean comp = false;
+		//Fighter f = null;
+		/*
+		 * for (int i = 0; i < fleet.size(); i++) { // Si el tipo es igual al parametro,
+		 * no esta destruido y no hemos cogido antes a // ninguno if
+		 * (!fleet.get(i).isDestroyed() && !comp) { if (fleet.get(i).getPosition() ==
+		 * null) { if (type.isEmpty()) { comp = true; f = fleet.get(i); break; } else
+		 * if(!type.equals("notablero")) { if (fleet.get(i).getType().equals(type)) { f
+		 * = fleet.get(i); comp = true; break; } } } } } if (comp) { return f; } else {
+		 * throw new NoFighterAvailableException(); }
+		 */
 		for (int i = 0; i < fleet.size(); i++) {
-			// Si el tipo es igual al parametro, no esta destruido y no hemos cogido antes a
-			// ninguno
-			if (!fleet.get(i).isDestroyed() && !comp) {
-				if (fleet.get(i).getPosition() == null) {
-					if (type.isEmpty()) {
-						comp = true;
-						f = fleet.get(i);
-						break;
-					} else if(!type.equals("notablero")) {
-						if (fleet.get(i).getType().equals(type)) {
-							f = fleet.get(i);
-							comp = true;
-							break;
-						}
+			if (fleet.get(i).getPosition() == null && !fleet.get(i).isDestroyed()) {
+				if (type == "") {
+					return fleet.get(i);
+				} else {
+					if (fleet.get(i).getType().equals(type)) {
+						return fleet.get(i);
 					}
 				}
 			}
 		}
-		if (comp) {
-			return f;
-		} else {
-			throw new NoFighterAvailableException();
-		}
+		throw new NoFighterAvailableException();
 	}
 
 	/**

@@ -24,6 +24,26 @@ public class Board {
 	/** The board. */
 	protected Map<Coordinate, Fighter> board;
 
+	
+	
+	
+	public int getnum(Side side) {
+		int contador = 0;
+		if(side != null) {
+			for(Coordinate coord : board.keySet()) {
+				if(board.get(coord).getSide() == side) {
+					contador++;
+				}
+			}
+		}else {
+			for(Coordinate coord : board.keySet()) {
+				if(!board.get(coord).isDestroyed()) {
+					contador++;
+				}
+			}
+		}
+		return contador;
+	}
 	/**
 	 * Instantiates a new board.
 	 *
@@ -164,8 +184,13 @@ public class Board {
 						throw new RuntimeException();
 					}
 					// Actualizamos los resultados de la madre
-					f.getMotherShip().updateResults(result);
-					board.get(c).getMotherShip().updateResults(-result);
+					if(result > 0) {
+					f.getMotherShip().updateResults(result,f);
+					board.get(c).getMotherShip().updateResults(-result, f);
+					}else {
+						f.getMotherShip().updateResults(result,board.get(c));
+						board.get(c).getMotherShip().updateResults(-result, board.get(c));
+					}
 					if (result == 1) {
 						// borramos al barco que hemos derrotado
 						board.remove(c, f);
@@ -216,9 +241,13 @@ public class Board {
 							throw new RuntimeException();
 						}
 						// Actualizamos a las madres
-						nuestro.getMotherShip().updateResults(resultado);
-						enemigo.getMotherShip().updateResults(-resultado);
-
+						if(resultado >0) {
+						nuestro.getMotherShip().updateResults(resultado, f);
+						enemigo.getMotherShip().updateResults(-resultado, f);
+						}else {
+							nuestro.getMotherShip().updateResults(resultado, enemigo);
+							enemigo.getMotherShip().updateResults(-resultado, enemigo);
+						}
 						// f ha perdido
 						if (resultado == -1) {
 							board.remove(f.getPosition());
