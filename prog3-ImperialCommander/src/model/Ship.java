@@ -142,6 +142,7 @@ public class Ship {
 	 * Update results.
 	 *
 	 * @param r the r
+	 * @param luchador the luchador
 	 */
 	public void updateResults(int r, Fighter luchador) {
 		switch (r) {

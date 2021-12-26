@@ -3,6 +3,7 @@
  */
 package model;
 
+import java.lang.reflect.Constructor;
 import java.util.Objects;
 
 
@@ -22,7 +23,10 @@ public class FighterFactory {
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(Mother);
 		try {
-		return (Fighter) Class.forName("model.fighters." + type).getConstructor(Ship.class).newInstance(Mother);
+			Class<?> newFighter = Class.forName("model.fighters." + type);
+			Constructor<?> c = newFighter.getDeclaredConstructor(Ship.class);
+			return (Fighter) c.newInstance(Mother);
+		//return (Fighter) Class.forName("model.fighters." + type).getConstructor(Ship.class).newInstance(Mother);
 		}catch(Exception | NoClassDefFoundError e) {
 			return null;
 		}

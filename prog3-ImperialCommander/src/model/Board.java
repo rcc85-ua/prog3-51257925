@@ -27,6 +27,12 @@ public class Board {
 	
 	
 	
+	/**
+	 * Gets the num.
+	 *
+	 * @param side the side
+	 * @return the num
+	 */
 	public int getnum(Side side) {
 		int contador = 0;
 		if(side != null) {
@@ -111,7 +117,6 @@ public class Board {
 	 *
 	 * @param c the c
 	 * @return true, if successful
-	 * @throws OutOfBoundsException the out of bounds exception
 	 */
 	public boolean inside(Coordinate c) {
 		Objects.requireNonNull(c);

@@ -10,6 +10,7 @@ import java.util.Objects;
 import model.exceptions.FighterIsDestroyedException;
 
 
+
 /**
  * The Class Fighter.
  */
@@ -80,6 +81,11 @@ public abstract class Fighter {
 
 	
 	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return velocity+attack;
 	}
