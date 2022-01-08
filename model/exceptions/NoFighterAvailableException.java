@@ -23,6 +23,6 @@ public class NoFighterAvailableException extends Exception{
 	 * @return the message
 	 */
 	public String getMessage() {
-		return "ERROR no Fighter Available";
+		return "ERROR: no Fighter Available";
 	}
 }

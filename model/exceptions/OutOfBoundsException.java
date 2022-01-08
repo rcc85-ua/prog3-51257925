@@ -31,6 +31,6 @@ public class OutOfBoundsException extends Exception{
 	 * @return the message
 	 */
 	public String getMessage() {
-		return "ERROR the coordinate" + coord + "is not in the board";
+		return "ERROR: the coordinate" + coord + "is not in the board";
 	}
 }

@@ -40,7 +40,7 @@ public class GameBoard extends Board{
 			for(Coordinate coord : board.keySet()) {
 				if(board.get(coord) != null && board.get(coord).getSide() == side) {
 					contador++;
-					System.out.println("Ha sido aceptado");
+					
 				}	
 			}
 		//}

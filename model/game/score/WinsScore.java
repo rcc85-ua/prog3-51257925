@@ -19,6 +19,8 @@ public class WinsScore extends Score<Integer>{
 	public WinsScore(Side side) {
 		super(side);
 	}
+	
+
 
 	/**
 	 * Score.
@@ -27,8 +29,9 @@ public class WinsScore extends Score<Integer>{
 	 */
 	@Override
 	public void score(Integer sc) {
+		if(sc != null)
 		if(sc == 1) {
-			addScore();
+			score++;
 		}
 	}
 }

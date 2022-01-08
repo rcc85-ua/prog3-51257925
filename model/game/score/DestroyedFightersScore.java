@@ -27,7 +27,9 @@ public class DestroyedFightersScore extends Score<Fighter>{
 	 * @param luchador the luchador
 	 */
 	public void score(Fighter luchador) {
-		this.xcore(luchador.getValue());
+		
+		if(luchador != null)
+		score+= luchador.getValue();
 	}
 	
 }

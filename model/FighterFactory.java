@@ -30,25 +30,5 @@ public class FighterFactory {
 		}catch(Exception | NoClassDefFoundError e) {
 			return null;
 		}
-		/*Method creador = c.getDeclaredMethod(, Mother);
-		*/
-		
-		/*switch(type) {
-		case "XWing":
-			return new XWing(Mother);
-		case "YWing":
-			return new YWing(Mother);
-		case "AWing":
-			return new AWing(Mother);
-		case "TIEBomber":
-			return new TIEBomber(Mother);
-		case "TIEFighter":
-			return new TIEFighter(Mother);
-		case "TIEInterceptor":
-			return new TIEInterceptor(Mother);
-		default:
-			return null;
-		}
-	}*/
 	}
 }

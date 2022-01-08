@@ -5,6 +5,7 @@
 package model.game;
 
 import model.game.score.DestroyedFightersScore;
+import model.game.score.Ranking;
 import model.game.score.WinsScore;
 import model.game.exceptions.*;
 import model.*;
@@ -20,8 +21,11 @@ import java.util.Objects;
 public class GameShip extends Ship {
 	
 	/** The Wins score. */
+	//puntuaje
 	private WinsScore WinsScore;
 	
+	
+
 	/** The Destroyed fighters score. */
 	private DestroyedFightersScore DestroyedFightersScore;
 	/**
@@ -32,6 +36,8 @@ public class GameShip extends Ship {
 	 */
 	public GameShip(String name, Side side) {
 		super(name, side);
+		WinsScore = new WinsScore(side);
+		DestroyedFightersScore = new DestroyedFightersScore(side);
 	}
 
 	/**
@@ -82,22 +88,35 @@ public class GameShip extends Ship {
 		 * Que no esten en el tablero
 		 *
 		 */
-		if (!where.equals("board")) {
+		
+		if(where.equals("")) {
 			for (int i = 0; i < fleet.size(); i++) {
 				if (!fleet.get(i).isDestroyed()) {
+					
 					resultado.add(fleet.get(i).getId());
+					
 				}
-
 			}
-		} else {
-			for (int i = 0; i < fleet.size(); i++) {
-				if (!fleet.get(i).isDestroyed()) {
-					if (fleet.get(i).getPosition() != null) {
+		}else {
+			if (!where.equals("board")) {
+				for (int i = 0; i < fleet.size(); i++) {
+					if (!fleet.get(i).isDestroyed()) {
+						if (fleet.get(i).getPosition() == null) {
 						resultado.add(fleet.get(i).getId());
+						}
+					}
+	
+				}
+			} else {
+				for (int i = 0; i < fleet.size(); i++) {
+					if (!fleet.get(i).isDestroyed()) {
+						if (fleet.get(i).getPosition() != null) {
+							resultado.add(fleet.get(i).getId());
+						}
 					}
 				}
+	
 			}
-
 		}
 		return resultado;
 	}

@@ -20,7 +20,7 @@ public class Ranking<ScoreType extends Score<?>> {
 	/**
 	 * Instantiates a new ranking.
 	 */
-	Ranking() {
+	public Ranking() {
 		scoreSet = new TreeSet<>();
 	}
 	
@@ -53,6 +53,7 @@ public class Ranking<ScoreType extends Score<?>> {
 	 * @return the sorted ranking
 	 */
 	public SortedSet<ScoreType> getSortedRanking(){
+		
 		return scoreSet;
 	}
 	
@@ -61,10 +62,15 @@ public class Ranking<ScoreType extends Score<?>> {
 	 *
 	 * @return the string
 	 */
-	public String ToString() {
+	public String toString() {
 		String resultado = "";
+		
+		resultado+="|";
+		
 		for(ScoreType puntuacion : scoreSet) {
 			resultado +=puntuacion.toString();
+			resultado+="|";
+		
 		}
 		return resultado;
 	}

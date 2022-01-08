@@ -190,11 +190,11 @@ public class Board {
 					}
 					// Actualizamos los resultados de la madre
 					if(result > 0) {
-					f.getMotherShip().updateResults(result,f);
-					board.get(c).getMotherShip().updateResults(-result, f);
+					f.getMotherShip().updateResults(result,board.get(c));
+					board.get(c).getMotherShip().updateResults(-result, board.get(c));
 					}else {
-						f.getMotherShip().updateResults(result,board.get(c));
-						board.get(c).getMotherShip().updateResults(-result, board.get(c));
+						f.getMotherShip().updateResults(result,f);
+						board.get(c).getMotherShip().updateResults(-result, f);
 					}
 					if (result == 1) {
 						// borramos al barco que hemos derrotado
@@ -247,11 +247,11 @@ public class Board {
 						}
 						// Actualizamos a las madres
 						if(resultado >0) {
-						nuestro.getMotherShip().updateResults(resultado, f);
-						enemigo.getMotherShip().updateResults(-resultado, f);
+						nuestro.getMotherShip().updateResults(resultado, enemigo);
+						enemigo.getMotherShip().updateResults(-resultado, enemigo);
 						}else {
-							nuestro.getMotherShip().updateResults(resultado, enemigo);
-							enemigo.getMotherShip().updateResults(-resultado, enemigo);
+							nuestro.getMotherShip().updateResults(resultado, nuestro);
+							enemigo.getMotherShip().updateResults(-resultado, nuestro);
 						}
 						// f ha perdido
 						if (resultado == -1) {

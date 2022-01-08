@@ -139,7 +139,7 @@ public class PlayerFile implements IPlayer {
 					try {
 						ship.improveFighter(id, qty, board);
 					} catch (WrongFighterIdException e) {
-						System.out.println("ERROR: en el improve");
+						
 						System.out.println(e.getMessage());
 					}
 				} else {
@@ -154,24 +154,26 @@ public class PlayerFile implements IPlayer {
 				try {
 					ship.patrol(Integer.parseInt(partes[1]), board);
 				} catch (WrongFighterIdException |  FighterNotInBoardException e) {
-					System.out.println("ERROR: en el patrol");
-					System.out.println("ERROR: " + e.getMessage());
+					
+					System.out.println( e.getMessage());
 				}
 			} else {
 				System.out.println("ERROR: INVALID COMMAND");
 			}
 			return 3;
 		case "launch":
+			if(partes.length==3 || partes.length==4) {
 			if (partes.length == 3) {
 				try {
 					Fighter luchador = ship.getFirstAvailableFighter("");
 					Coordinate c = new Coordinate(Integer.parseInt(partes[1]), Integer.parseInt(partes[2]));
-					try {
-						ship.launch(luchador.getId(), c, board);
-					} catch (Exception e) {
-						System.out.println("ERROR: en el launch");
-						System.out.println(e.getMessage());
-					}
+					
+						try {
+							ship.launch(luchador.getId(), c, board);
+						} catch (WrongFighterIdException | FighterAlreadyInBoardException | OutOfBoundsException e) {
+							System.out.println(e.getMessage());
+						}
+					
 				} catch (NoFighterAvailableException e) {
 					//System.out.print("ERROR: en el launch");
 					System.out.println(e.getMessage());
@@ -183,26 +185,28 @@ public class PlayerFile implements IPlayer {
 					try {
 						ship.launch(i, c, board);
 					} catch (WrongFighterIdException | FighterAlreadyInBoardException | OutOfBoundsException e) {
-						System.out.println("ERROR: Error en el launch");
+						
 						System.out.println(e.getMessage());
 					}
 				} catch (NumberFormatException e) {
 					try {
 						Fighter luchador = ship.getFirstAvailableFighter(partes[3]);
 						Coordinate c = new Coordinate(Integer.parseInt(partes[1]), Integer.parseInt(partes[2]));
-						try {
-							ship.launch(luchador.getId(), c, board);
-						} catch (Exception e1) {
-							System.out.println("ERROR: error en el launch");
-							System.out.println(e1.getMessage());
-						}
+						
+							try {
+								ship.launch(luchador.getId(), c, board);
+							} catch (WrongFighterIdException | FighterAlreadyInBoardException
+									| OutOfBoundsException e1) {
+								System.out.println(e1.getMessage());
+							}
+						
 					} catch (NoFighterAvailableException e1) {
-						System.out.println("ERROR: en el launch");
+						
 						System.out.println(e1.getMessage());
 					}
 				}
-			} else {
-				System.out.println("ERROR INVALID COMMAND");
+			} }else {
+				System.out.println("ERROR: INVALID COMMAND");
 			}
 			return 4;
 		default:

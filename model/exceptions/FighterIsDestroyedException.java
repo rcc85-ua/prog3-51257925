@@ -23,6 +23,6 @@ public class FighterIsDestroyedException extends java.lang.Exception{
 	 * @return the message
 	 */
 	public String getMessage() {
-		return "ERROR the fighter is destroyed"; 
+		return "ERROR: the fighter is destroyed"; 
 	}
 }

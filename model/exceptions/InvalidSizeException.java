@@ -30,6 +30,6 @@ public class InvalidSizeException extends Exception{
 	 * @return the message
 	 */
 	public String getMessage() {
-		return "ERROR board size: " + size + "is invalid";
+		return "ERROR: board size: " + size + "is invalid";
 	}
 }

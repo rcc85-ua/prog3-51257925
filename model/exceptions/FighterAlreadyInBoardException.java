@@ -33,6 +33,6 @@ public class FighterAlreadyInBoardException extends Exception{
 	 * @return the message
 	 */
 	public String getMessage() {
-		return "ERROR the fighter is already in the coordinate " + coord + ", can't launch fighter in the Coordinate" + coord2;
+		return "ERROR: the fighter is already in the coordinate " + coord + ", can't launch fighter in the Coordinate" + coord2;
 	}
 }

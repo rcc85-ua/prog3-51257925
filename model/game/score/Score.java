@@ -14,7 +14,7 @@ import model.Side;
 public abstract class Score<T> implements Comparable<Score<T>> {
 
 	/** The score. */
-	private int score;
+	protected int score;
 
 	/** The side. */
 	protected Side side;
@@ -38,21 +38,6 @@ public abstract class Score<T> implements Comparable<Score<T>> {
 		return score;
 	}
 
-	/**
-	 * Adds the score.
-	 */
-	public void addScore() {
-		score++;
-	}
-
-	/**
-	 * Xcore.
-	 *
-	 * @param sum the sum
-	 */
-	public void xcore(int sum) {
-		score += sum;
-	}
 
 	/**
 	 * Sets the side.
@@ -70,14 +55,26 @@ public abstract class Score<T> implements Comparable<Score<T>> {
 	 * @return the int
 	 */
 	public int compareTo(Score<T> other) {
+		// devuelve 1 si es mayor, -1 si es menor y 0 si son iguales
+		int devuelto = 0;
+
 		if (score < other.score) {
-			return other.score;
+			devuelto = 1;
+		} 
+		
+		if(score > other.score) {
+				devuelto=-1;
 		}
-		if (score == other.score) {
-			return this.compareTo(other);
-		} else {
-			return score;
+		
+		if(score == other.score) {
+			
+			if(side.equals(other.side)) { devuelto= 0;}
+			
+			if(side.equals(Side.IMPERIAL) && other.side.equals(Side.REBEL)) {devuelto = -1;}
+			
+			if(side.equals(Side.REBEL)&& other.side.equals(Side.IMPERIAL)) {devuelto= 1;}
 		}
+		return devuelto;
 	}
 
 	/**
@@ -86,6 +83,7 @@ public abstract class Score<T> implements Comparable<Score<T>> {
 	 * @return the string
 	 */
 	public String toString() {
+
 		return "Player " + side + ": " + score;
 	}
 

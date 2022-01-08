@@ -6,6 +6,7 @@ package model.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import model.*;
 import model.exceptions.FighterAlreadyInBoardException;
@@ -36,6 +37,8 @@ public class PlayerRandom implements IPlayer {
 	 * @param numFighters the num fighters
 	 */
 	public PlayerRandom(Side side, int numFighters) {
+		Objects.requireNonNull(side);
+		Objects.requireNonNull(numFighters);
 		if (side == Side.IMPERIAL) {
 			ship = new GameShip("PlayerRandom IMPERIAL Ship", Side.IMPERIAL);
 		} else {
@@ -73,7 +76,7 @@ public class PlayerRandom implements IPlayer {
 				constructor.append(aleatorios[2] + "/AWing");
 			}
 		}
-		if (constructor != null) {
+		if (constructor.length() != 0) {
 			ship.addFighters(constructor.toString());
 		}
 	}
@@ -179,6 +182,9 @@ public class PlayerRandom implements IPlayer {
 		int option = RandomNumber.newRandomNumber(100);
 		int id;
 		List<Integer> luchadores = null;
+		if (option == 99) {
+			return false;
+		} 
 		if (option >= 85) {
 			// Coje todos
 			luchadores = ship.getFightersId("ship");
@@ -194,7 +200,7 @@ public class PlayerRandom implements IPlayer {
 			System.out.println("ERROR: NO FIGHTERS AVAIBLE");
 			return true;
 		}
-		System.out.println(option + "-");
+	
 		id = luchadores.get(RandomNumber.newRandomNumber(luchadores.size()));
 		if (option == 99) {
 			return false;
