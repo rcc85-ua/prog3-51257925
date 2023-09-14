@@ -20,7 +20,7 @@ public class Board {
 
 	/** The size. */
 	private int size;
-
+	//Hola como estas
 	/** The board. */
 	protected Map<Coordinate, Fighter> board;
 
